@@ -15,6 +15,7 @@ app.get("/health", async (req, res) => {
   }
 });
 
+// read 
 app.get("/tasks", async (req, res) => {
   const { month } = req.query; 
 
@@ -39,7 +40,7 @@ app.get("/tasks", async (req, res) => {
   }
 });
 
-// create task
+// create 
 app.post("/tasks", async (req, res) => {
   const { task_date, title, notes } = req.body;
 
@@ -65,7 +66,7 @@ app.post("/tasks", async (req, res) => {
   }
 });
 
-// update task
+// update 
 app.put("/tasks/:id", async (req, res) => {
   const { id } = req.params;
   const { title, notes, is_done } = req.body;
@@ -90,7 +91,7 @@ app.put("/tasks/:id", async (req, res) => {
   }
 });
 
-// delete task
+// delete 
 app.delete("/tasks/:id", async (req, res) => {
   const { id } = req.params;
 

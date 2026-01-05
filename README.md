@@ -55,6 +55,50 @@ docker compose ps
 
 https://localhost (или http://localhost - автоматично пренасочва към HTTPS)
 
+## Деплойване
+
+### GitHub Pages (Frontend Only)
+
+**Важно:** GitHub Pages може да хостира само frontend (статични файлове). Backend и базата данни трябва да са деплойнати отделно.
+
+#### Автоматично деплойване
+
+1. **Активирайте GitHub Pages:**
+   - Отидете в Settings → Pages
+   - Source: "GitHub Actions"
+
+2. **Настройте Backend API URL (опционално):**
+   - Отидете в Settings → Secrets and variables → Actions
+   - Добавете нов secret: `VITE_API_BASE`
+   - Стойност: URL на вашия деплойнат backend (напр. `https://your-backend.railway.app/api`)
+   - Ако не зададете secret, frontend ще използва относителен път `/api` (работи само ако backend е на същия домейн)
+
+3. **Push към main branch:**
+   ```bash
+   git push origin main
+   ```
+   GitHub Actions автоматично ще build-не и deploy-не frontend-а.
+
+4. **Достъп:**
+   - Вашият сайт ще бъде на: `https://0xSilvermist.github.io/task_manager/`
+
+#### Ръчно деплойване
+
+```bash
+cd frontend
+npm install
+npm run build
+# Качете съдържанието на frontend/dist/ в GitHub Pages
+```
+
+### Пълно деплойване (Frontend + Backend + Database)
+
+За пълно деплойване на всички компоненти, използвайте платформи, които поддържат Docker:
+
+- **Railway** (препоръчително): https://railway.app
+- **Render**: https://render.com
+- **Fly.io**: https://fly.io
+- **DigitalOcean App Platform**: https://www.digitalocean.com/products/app-platform
 
 ## Структура на проекта
 

@@ -14,6 +14,20 @@ function dateKey(y, m, d) {
   return `${y}-${pad2(m)}-${pad2(d)}`;
 }
 
+function formatDateDisplay(dateStr) {
+  const [year, month, day] = dateStr.split('-').map(Number);
+  const date = new Date(year, month - 1, day);
+  const dayNum = day;
+  
+  let suffix = 'th';
+  if (dayNum === 1 || dayNum === 21 || dayNum === 31) suffix = 'st';
+  else if (dayNum === 2 || dayNum === 22) suffix = 'nd';
+  else if (dayNum === 3 || dayNum === 23) suffix = 'rd';
+  
+  const monthName = date.toLocaleString(undefined, { month: 'long' });
+  return `${dayNum}${suffix} ${monthName}`;
+}
+
 export default function App() {
   const [current, setCurrent] = useState(() => {
     const d = new Date();
@@ -218,6 +232,13 @@ export default function App() {
       const isSelected = key === selectedDate;
       const isOtherMonth = cell.month !== "current";
 
+      const handleCellClick = () => {
+        if (cell.month !== 'current') {
+          setCurrent(new Date(cell.year, cell.monthIdx, 1));
+        }
+        setSelectedDate(key);
+      };
+
       return (
         <button
           key={idx}
@@ -232,7 +253,7 @@ export default function App() {
                 : "bg-white border-gray-200 hover:bg-indigo-50 hover:shadow-sm"
             }
           `}
-          onClick={() => setSelectedDate(key)}
+          onClick={handleCellClick}
         >
           <div className={`text-sm ${isOtherMonth ? "font-normal text-gray-400" : "font-semibold"}`}>
             {cell.day}
@@ -254,7 +275,7 @@ export default function App() {
 </div>
 
       <section className="bg-white border border-gray-200 rounded-2xl p-4">
-        <h2 className="m-0 mb-3 text-[15px] font-semibold">Tasks for {selectedDate}</h2>
+        <h2 className="m-0 mb-3 text-[15px] font-semibold">Tasks for {formatDateDisplay(selectedDate)}</h2>
         <div className="flex gap-2 flex-wrap mb-3">
           <input
             placeholder="Task title..."
@@ -378,7 +399,7 @@ export default function App() {
       >
         <div className="space-y-4">
           <p className="text-gray-700">
-            Are you sure you want to delete "{deleteModal.task?.title}"? This action cannot be undone.
+            Сигурен/а ли си, че искаш да изтриеш "{deleteModal.task?.title}"?
           </p>
           <div className="flex gap-2 justify-end">
             <button
