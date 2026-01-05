@@ -212,14 +212,17 @@ export default function App() {
       )}
       <div className="mb-5">
   <div className="grid grid-cols-7 gap-1.5 mb-1">
-    {weekdays.map((w) => (
-      <div
-        key={w}
-        className="text-center text-[11px] font-medium text-gray-500 py-1"
-      >
-        {w}
-      </div>
-    ))}
+    {weekdays.map((w, idx) => {
+      const isWeekend = idx === 5 || idx === 6; // Sat or Sun
+      return (
+        <div
+          key={w}
+          className={`text-center text-[11px] font-medium py-1 ${isWeekend ? 'text-gray-700 font-semibold' : 'text-gray-500'}`}
+        >
+          {w}
+        </div>
+      );
+    })}
   </div>
 
   <div
@@ -231,6 +234,8 @@ export default function App() {
       const count = (tasksByDate.get(key) || []).length;
       const isSelected = key === selectedDate;
       const isOtherMonth = cell.month !== "current";
+      const dayOfWeek = idx % 7;
+      const isWeekend = dayOfWeek === 5 || dayOfWeek === 6; // Sat or Sun
 
       const handleCellClick = () => {
         if (cell.month !== 'current') {
@@ -247,15 +252,19 @@ export default function App() {
             transition-all duration-150 flex flex-col
             ${
               isOtherMonth
-                ? "bg-gray-50 border-gray-100 text-gray-400 hover:bg-gray-100"
+                ? isWeekend
+                  ? "bg-gray-100 border-gray-200 text-gray-500 hover:bg-gray-200"
+                  : "bg-gray-50 border-gray-100 text-gray-400 hover:bg-gray-100"
                 : isSelected
                 ? "bg-indigo-50 border-indigo-300"
+                : isWeekend
+                ? "bg-gray-100 border-gray-300 hover:bg-gray-200 hover:shadow-sm"
                 : "bg-white border-gray-200 hover:bg-indigo-50 hover:shadow-sm"
             }
           `}
           onClick={handleCellClick}
         >
-          <div className={`text-sm ${isOtherMonth ? "font-normal text-gray-400" : "font-semibold"}`}>
+          <div className={`text-sm ${isOtherMonth ? "font-normal text-gray-400" : isWeekend ? "font-semibold text-gray-700" : "font-semibold"}`}>
             {cell.day}
           </div>
 
