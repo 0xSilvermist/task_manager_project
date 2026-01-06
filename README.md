@@ -6,10 +6,9 @@
 
 ## Архитектура
 
-![System Architecture Diagram](./UML.png)
+![image](./UML.png)
 
 ## Компоненти
-
 ### 1. Frontend (React)
 - **Технология:** React + Vite + Tailwind CSS
 
